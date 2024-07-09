@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<!-- namespace : 패키지이름.클래스이름 ( 저장된 경로와 일치하도록 작성 ) Dao에서 쓸 때 이 경로 꼭 정확히 매칭하셈 -->
+	<mapper namespace="com.coffeeorderproject.mapper.MyPageMapper">
+	
+		
+		<select id="selectCouponList" parameterType="userDto" resultType="userCouponDto">
+			SELECT * FROM coupon WHERE userId = #{ userId } AND couponactive = 0 AND DATE(couponlastdate) >= CURDATE()
+		</select>
+	
+		<select id="selectUserCouponList" parameterType="string" resultType="userCouponDto">
+			SELECT * FROM coupon WHERE userId = #{ userId } AND couponactive = 0
+		</select>
+		
+		<update id="updateUserInfo" parameterType="userDto">
+			UPDATE user SET userPw = #{ userPw }, userNickname = #{ userNickname }, userPhone = #{ userPhone }, userEmail = #{ userEmail } WHERE userId = #{ userId }
+		</update>
+		
+		<select id="selectAllUserBoardList" parameterType="string" resultType="boardDto">
+			SELECT boardno, userid, boardcategoryid, boardtitle, boarddate, boardmodifydate, boardcontent, boarddelete 
+			FROM hollys.board WHERE userId = #{ userId } AND boardcategoryid = 1 AND boarddelete = 0 
+		</select>
+
+		<select id="selectMyPageUserOrders" parameterType="string" resultType="userOrderDto">
+			SELECT orderid, userid, orderoption, orderdate, orderstatus, orderpayment, couponuse 
+			FROM hollys.orders 
+			WHERE userId = #{ userId } 
+		</select>
+		
+		<select id="selectUserOrderList" parameterType="hashmap" resultType="userOrderDto">
+			SELECT  o.orderstatus, o.orderdate, o.orderid,u.username, p.prodname, od.cartquantity, 
+			o.couponuse, (p.prodprice * od.cartquantity), o.orderpayment 
+			FROM orders o 
+			INNER JOIN user u ON o.userid = u.userid 
+			INNER JOIN orderdetail od ON o.orderid = od.orderid 
+			INNER JOIN product p ON od.prodno = p.prodno 
+			WHERE u.userId = #{ userId } 
+			ORDER BY  o.orderdate DESC, (p.prodprice * od.cartquantity) 
+			LIMIT #{ pageNum }, 15 
+		</select>
+		
+		<select id="getBoardCount" parameterType="string" resultType="int">
+			SELECT COUNT(orderid) FROM hollys.orders WHERE userId = #{ userId }
+		</select>
+	</mapper>

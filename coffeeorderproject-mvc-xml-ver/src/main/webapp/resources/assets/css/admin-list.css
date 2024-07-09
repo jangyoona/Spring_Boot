@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+
+
+.list-col-div {
+  margin-top : 100px;
+  
+}
+
+.select-form {
+	position: relative;
+	top: 4vh;
+}
+
+.serch-menu-box{
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+  font-size: 13px;
+  border-radius: 5px;
+  border: 1px solid gray;
+
+}
+.serch-menu-box option {
+  width: 50px;
+}
+
+
+.serch-input {
+	margin-top: 50px;
+  	margin-left: 12px;
+  	width: 20%;
+  	height: 45px;
+  	border-radius: 5px;
+  	border: 1px solid gray;
+}
+
+.list-col-div {
+	margin-top: 50px;
+/* 	border-top : 1px solid gray; */
+}
+
+.yoonbox {
+	width: 100%;
+}
+
+.detail-product > img {
+	width: 100px;
+	height: 100px;
+}
+
+.search-btn-brown {
+ 	position: relative;
+	top: 6px;
+
+}
+
+.user-td-input {
+	text-align: center;
+}
+
+/* 상품관리 탭 */
+#insert-button {
+	position: relative;
+	float: inline-end;
+	margin-right: 10%;
+}
+
+
+/* 아래부터 판매관리 탭 css */
+
+.revenue-page-table {
+	table-layout: fixed;
+	text-align: center;
+}
+
+/* 결제창 */
+.pay-coupon-btn { /* 쿠폰 사용 버튼 */
+	position: relative;
+	left: 310px;
+	bottom: 58px;
+}
+
+#pay-coupon-checkbox { /* 쿠폰 있는지 확인 인풋 */
+	width: 300px;
+	height: 57px;
+	background-color: white;
+}
+
+.pay-total-text {
+	display: inline-block;
+	width: 100px;
+	position: relative;
+	left: 20px;
+	font-size: 18px;
+}
+
+.pay-font {
+	display: inline-block;
+	position: relative;
+	left: 50px;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+
+/* 리스트 디자인 */
+
+

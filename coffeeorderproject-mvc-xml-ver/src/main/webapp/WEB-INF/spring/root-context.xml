@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="accountService" class="com.coffeeorderproject.spring.service.AccountServiceImpl">
+	    <property name="userMapper" ref="userMapper" />
+	</bean>
+	
+	<bean id="userboardService" class="com.coffeeorderproject.spring.service.UserBoardServiceImpl">
+		<property name="userBoardMapper" ref="userBoardMapper" />
+	</bean>
+	
+	<bean id="myPageService" class="com.coffeeorderproject.spring.service.MyPageServiceImpl">
+<!-- 		<property name="myPageDao" ref="myPageDao"></property>
+		<property name="cartDao" ref="cartDao"></property>
+		<property name="couponDao" ref="couponDao"></property>
+		<property name="userBoardDao" ref="userBoardDao"></property>
+		<property name="orderDao" ref="orderDao"></property> -->
+		<property name="myPageMapper" ref="myPageMapper" />
+	</bean>
+	
+	<bean id="myPageDao" class="com.coffeeorderproject.spring.dao.MyPageDaoImpl" />
+	<bean id="cartDao" class="com.coffeeorderproject.spring.dao.CartDaoImpl" />
+	<bean id="couponDao" class="com.coffeeorderproject.spring.dao.CouponDaoImpl" />
+	<bean id="userBoardDao" class="com.coffeeorderproject.spring.dao.UserBoardDaoImpl" />
+	<bean id="orderDao" class="com.coffeeorderproject.spring.dao.UserOrderDaoImpl" />
+	
+
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<!-- MyBatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://3.37.123.170:3306/hollys" />
+		<property name="username" value="hollys" />
+		<property name="password" value="mysql" />
+		
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="10" />
+	</bean>
+	
+	<mybatis:scan base-package="com.coffeeorderproject.mapper" />
+	
+	<!-- DB Oracle dataSource -->
+<!-- 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521/xe" />
+		<property name="username" value="green_cloud" />
+		<property name="password" value="oracle" />
+		
+		<property name="initialSize" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="10" />
+	</bean> -->
+	
+	
+</beans>
+
+
+
+

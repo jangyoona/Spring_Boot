@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<!-- namespace : 패키지이름.클래스이름 ( 저장된 경로와 일치하도록 작성 ) Dao에서 쓸 때 이 경로 꼭 정확히 매칭하셈 -->
+	<mapper namespace="com.coffeeorderproject.mapper.UserBoardMapper">
+	
+<!-- 	<select id="selectUserBoard" parameterType="hasgmap" resultType="BoardDto">
+		
+	</select> -->
+	<select id="selectReviewBoardByRange" parameterType="hashmap" resultType="boardDto">
+		SELECT b.boardno, b.userid, b.boardtitle, b.boarddate, b.boardmodifydate, b.boardcontent, p.prodname 
+		FROM board b LEFT OUTER JOIN  productreview pr ON b.boardno = pr.boardno 
+		LEFT OUTER JOIN product p ON p.prodno = pr.prodno 
+		WHERE boardCategoryid = 1 AND b.boarddelete = false ORDER BY boardNo DESC LIMIT #{ start }, #{ count }
+	</select>
+	
+	<select id="selectProdByProdNoByProdName" resultType="productDto">
+		SELECT * FROM product WHERE prodActive = false  ORDER BY prodNo DESC
+	</select>
+	
+	<select id="selectBoardCount" resultType="int">
+		SELECT COUNT(*) FROM board WHERE boardDelete = false AND boardcategoryId = 1
+	</select>
+	
+	<select id="selectUesridByOrders" parameterType="int" resultType="userOrderDto">
+		SELECT p.prodname, p.prodno FROM orderdetail od 
+		LEFT JOIN orders  o  ON  o.orderid =  od.orderid 
+		LEFT JOIN product p  ON  p.prodno = od.prodno WHERE od.orderid = #{ orderId }
+	</select>
+	
+	<insert id="insertBoard" parameterType="boardDto" useGeneratedKeys="true" keyColumn="boardNo" keyProperty="boardNo">
+		INSERT INTO board (userId, boardTitle, boardContent, boardcategoryId) 
+		VALUES (#{ userId }, #{ boardTitle }, #{ boardContent }, #{ boardcategoryId })
+	</insert>
+	
+	<insert id="insertBoard2" parameterType="boardDto">
+		INSERT INTO productreview (boardno, prodno) VALUES ( #{ boardNo }, #{ prodNo })
+	</insert>
+	
+	<insert id="insertBoardAttach" parameterType="boardAttachDto">
+		INSERT INTO boardattach (boardNo, userfilename, savedfilename)
+		VALUES (#{ boardNo }, #{ userfilename }, #{ savedfilename })
+	</insert>
+	
+	<select id="selectBoardByBoardNo" parameterType="int" resultType="boardDto">
+		SELECT b.boardno, b.userid, b.boardtitle, b.boarddate, b.boardmodifydate, b.boardcontent, p.prodname 
+		FROM board b LEFT OUTER JOIN productreview pr ON b.boardno = pr.boardno  
+		LEFT OUTER JOIN product p ON p.prodno = pr.prodno WHERE boardcategoryid = 1 ANd b.boardno = #{ boardNo }
+		ORDER BY boardNo DESC
+		
+	</select>
+	
+	<select id="selectBoardAttachByBoardNo" parameterType="integer" resultType="boardAttachDto">
+		SELECT fileno, boardno, userfilename, savedfilename FROM boardattach 
+		WHERE boardNo = #{ boardNo }
+	</select>
+	
+	<select id="selectBoardCommentByBoardNo" parameterType="integer" resultType="boardCommentDto">
+		SELECT commentno, userid, boardno,  commentcontent, commentdate, commodifydate, commentactive, groupno, replycount, replylocation 
+		FROM comment WHERE boardNo = #{ boardNo } ORDER BY groupno DESC, replycount ASC
+	</select>
+	
+	<select id="selectBoardAttachByAttachNo" parameterType="int" resultType="boardAttachDto">
+		SELECT fileno, boardno, userfilename, savedfilename FROM boardattach 
+		WHERE fileno = #{ attachNo }
+	</select>
+	
+	<insert id="insertBoardComment" parameterType="boardCommentDto">
+		<selectKey keyProperty="commentNo" resultType="int" order="BEFORE">
+			SELECT AUTO_INCREMENT 
+			FROM information_schema.TABLES 
+			WHERE TABLE_SCHEMA = 'hollys' 
+			AND TABLE_NAME = 'comment' 
+		</selectKey>
+		INSERT INTO comment (boardNo, userId, commentContent, groupNo, replycount, replylocation)
+		VALUES (#{ boardNo }, #{ userId }, #{ commentContent }, #{ commentNo }, 1, 0)
+	</insert>
+	
+	<select id="selectBoardCommentsByBoardNo" parameterType="int" resultType="boardCommentDto">
+ 		SELECT commentNo, boardNo, userId, commentContent, commentDate, comModifyDate, commentActive, groupno, replycount, replylocation 
+		FROM comment 
+		WHERE boardNo = #{ boardNo } 
+		ORDER BY groupno DESC, replycount ASC 
+	</select>
+	
+	<update id="deleteComment" parameterType="int">
+		UPDATE comment set commentActive = true WHERE commentNo = #{ commentNo }
+	</update>
+	
+	</mapper>

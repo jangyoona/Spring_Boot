@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<!-- namespace : 패키지이름.클래스이름 ( 저장된 경로와 일치하도록 작성 ) Dao에서 쓸 때 이 경로 꼭 정확히 매칭하셈 -->
+	<mapper namespace="com.coffeeorderproject.mapper.UserMapper">
+	
+		<!-- 지정된 SQL을 실행하는 method 역할 -->
+		<insert id="insertUser" parameterType="userDto">
+			INSERT INTO user (userId, userName, userNickname, userPhone, userEmail, userPw)
+			VALUES (#{userId}, #{userName}, #{userNickname}, #{userPhone}, #{userEmail}, #{userPw})
+		</insert>
+		
+		<select id="idCheck" parameterType="userDto" resultType="boolean">
+			SELECT COUNT(userId) from user WHERE userId = #{ userId }
+		</select>
+		
+		<select id="selectUser" parameterType="userDto" resultType="userDto">
+			SELECT u.userId, userName, userNickname, userPhone, userEmail, userPw, userAdmin, userRegidate, userActive, c.couponId 
+			FROM user u 
+			LEFT JOIN coupon c ON u.userid = c.userid 
+			WHERE u.userId = #{ userId } AND u.userPw = #{ userPw } AND u.userActive = false
+		</select>
+		
+		<select id="selectUserEmail" parameterType="string" resultType="userDto">
+			SELECT userEmail from user WHERE userId = #{ userId }
+		</select>
+		
+		<update id="updateUserPw" parameterType="hashmap">
+			UPDATE user SET userPw = #{ newPw } WHERE userId = #{ userId }
+		</update>
+		
+		<update id="updateUser" parameterType="string">
+			UPDATE user SET userActive = 1 WHERE userId = #{ userId }
+		</update>
+
+	</mapper>
