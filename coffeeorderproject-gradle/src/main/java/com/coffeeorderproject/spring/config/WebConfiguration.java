@@ -1,6 +1,5 @@
-package com.demoweb.config;
-
-import com.demoweb.interceptor.AuthInterceptor;
+package com.coffeeorderproject.spring.config;
+import com.coffeeorderproject.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;

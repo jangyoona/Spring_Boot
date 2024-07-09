@@ -2,19 +2,24 @@
 
 <!DOCTYPE configuration
 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "https://mybatis.org/dtd/mybatis-3-config.dtd">
-
+	
 <configuration>
 
 	<typeAliases>
-		<typeAlias type="com.demoweb.dto.MemberDto" alias="MemberDto" />
-		<typeAlias type="com.demoweb.dto.BoardDto" alias="BoardDto" />
-		<typeAlias type="com.demoweb.dto.BoardCommentDto" alias="BoardCommentDto" />
-		<typeAlias type="com.demoweb.dto.BoardAttachDto" alias="BoardAttachDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.UserDto" alias="userDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.UserCouponDto" alias="userCouponDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.CartDto" alias="cartDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.BoardDto" alias="boardDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.BoardAttachDto" alias="boardAttachDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.BoardCommentDto" alias="boardCommentDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.UserOrderDto" alias="userOrderDto" />
+		<typeAlias type="com.coffeeorderproject.spring.dto.ProductDto" alias="productDto" />
 	</typeAliases>
 	
 	<mappers>
-		<mapper resource="com/demoweb/mapper/MemberMapper.xml" />
-		<mapper resource="com/demoweb/mapper/BoardMapper.xml" />
+		<mapper resource="com/coffeeorderproject/mapper/UserMapper.xml" />
+		<mapper resource="com/coffeeorderproject/mapper/MyPageMapper.xml" />
+		<mapper resource="com/coffeeorderproject/mapper/UserBoardMapper.xml" />
 	</mappers>
 
 </configuration>

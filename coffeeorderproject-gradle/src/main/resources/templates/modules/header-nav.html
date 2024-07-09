@@ -9,17 +9,16 @@
 	
             	</div>
             <div class="top-link pe-2">
-            	<small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i><a href="" class="text-white">TOTAL VISIT : ${ total == null ? "0" : total }</a></small>
+            	<!--<small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i><a href="" class="text-white">TOTAL VISIT : ${ total == null ? "0" : total }</a></small>-->
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i><a class="text-white">TOTAL VISIT :<span th:text="${ total == null ? 0 : total }"></span></a></small>
                 
                 
               
-               <%-- session으로 로그인 확인 후 조건문으로 jsp 적기 --%> 
+               <!-- session으로 로그인 확인 후 조건문으로 jsp 적기 -->
 
-                <th:block th:if="${ #ctx.session.loginuser != null }">
+                <th:block th:if="${ #ctx.session.loginUser != null }">
                  <a href="#" class="text-white"><small class="text-white ms-2">[[${ loginUser.userNickname }]] 님 반갑습니다 /</small></a>
                  <a href="/userMyPage/logout" class="text-white"><small class="text-white ms-2">Log out</small></a>
-                </c:when>
-                </c:choose>
                 </th:block>
 
             </div>
@@ -34,21 +33,21 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                  <div class="navbar-nav mx-auto">
                     <a href="/home" class="nav-item nav-link active">Home</a>
-                    <%-- Product Zone --%>
+                    <!-- Product Zone -->
                     <a href="/hollysProduct/shop?page=1&select=0" class="nav-item nav-link">Menu</a>
-                    <%-- ------------ --%>
+                    <!-- ------------ -->
                     <div class="nav-item dropdown">
                     </div>
                     <a href="/board/review" class="nav-item nav-link">Review</a>
-                    <a class="nav-item nav-link contact-seller">Contact Seller</a>                    
+                    <a class="nav-item nav-link contact-seller">Contact Seller</a>
                     <a href="/announcement" class="nav-item nav-link">Notice</a>
 
-                    
+
                 </div>
                 <div class="d-flex m-3 me-0">
-                    <th:block th:if="${ #ctx.session.loginUser.userAdmin == true }">
-                    <a href="/admin-home" class="nav-item nav-link">AdminPage</a> <!-- yoona -->
-                    </th:block>
+<!--                    <th:block th:if="${ #ctx.session.loginUser.userAdmin == true }">
+                    <a href="/admin-home" class="nav-item nav-link">AdminPage</a> &lt;!&ndash; yoona &ndash;&gt;
+                    </th:block>-->
 
                     <th:block th:if="${ #ctx.session.loginUser != null }">
                     <a href="/hollysProduct/cart-product" class="position-relative me-4 my-auto">
@@ -63,14 +62,14 @@
                     <!-- 로그인 안된 상태 : login page로 이동 -->
                     <th:block th:if="${ #ctx.session.loginUser != null }">
                      <a href="/userMyPage/mypage" class="my-auto">
-                     <i class="fas fa-user fa-2x"></i> 
+                     <i class="fas fa-user fa-2x"></i>
                      </a>
                     </th:block>
 
                       <!-- 로그인 된 상태 : my page로 이동 -->
                     <th:block th:if="${ #ctx.session.loginUser == null }">
             		 <a href="/userAccount/login" class="my-auto">
-            		 <i class="fas fa-user fa-2x"></i> 
+            		 <i class="fas fa-user fa-2x"></i>
             		 </a>
                     <th:block th:if="${ #ctx.session.loginUser == null }">
 
