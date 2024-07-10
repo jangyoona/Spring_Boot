@@ -12,7 +12,7 @@
 			VALUES (#{userId}, #{userName}, #{userNickname}, #{userPhone}, #{userEmail}, #{userPw})
 		</insert>
 		
-		<select id="idCheck" parameterType="userDto" resultType="boolean">
+		<select id="idCheck" parameterType="userDto" resultType="int">
 			SELECT COUNT(userId) from user WHERE userId = #{ userId }
 		</select>
 		

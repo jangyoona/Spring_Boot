@@ -30,12 +30,8 @@ public class AccountServiceImpl implements AccountService {
 	// 중복 아이디 검사
 	@Override
 	public Boolean checkId(UserDto user) {
-		Boolean isHave = userMapper.idCheck(user);
-//		if(isHave == true) {
-//			isHave = false;
-//		} else {
-//			isHave = true;
-//		}
+		int have = userMapper.idCheck(user);
+		boolean isHave = have == 0 ? false : true;
 
 		return isHave;
 	}

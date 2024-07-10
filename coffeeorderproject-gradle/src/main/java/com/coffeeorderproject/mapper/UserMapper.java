@@ -8,7 +8,7 @@ import com.coffeeorderproject.spring.dto.UserDto;
 public interface UserMapper {
 	void insertUser(UserDto user);
 
-	Boolean idCheck(UserDto user);
+	int idCheck(UserDto user);
 
 	UserDto selectUser(UserDto user);
 

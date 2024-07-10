@@ -62,30 +62,17 @@
                     <div class="register-container">
                         <ul>
                             <li>
-                                <label for="id">
+                                <label htmlFor="id">
                                     아이디<br>
-                                    <c:choose>
-                                        <c:when test="${ not empty param.userId }">
-                                            <input class="id-input" name="userId" type="text" value="${param.userId}">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input class="id-input" name="userId" type="text">
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <input th:if="${ param.userId }" class="id-input" name="userId" type="text" th:value="${param.userId}">
+                                    <input th:unless="${ param.userId }" class="id-input" name="userId" type="text">
                                 </label>
                                 <p class="id-msg"></p>
                                 <button type="button" class="id-check-btn">아이디 확인</button>
-                                <c:choose>
-                                    <c:when test="${ empty param.userId }">
-                                        <span class="idcheck-content"></span>
-                                    </c:when>
-                                    <c:when test="${ isHaveId == false }">
-                                        <span class="idcheck-content">등록된 아이디가 없습니다</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="idcheck-content" value="확인">확인되었습니다</span>
-                                    </c:otherwise>
-                                </c:choose>
+                                <th:block th:if="${param.userId}" class="idcheck-content">
+                                    <span th:if="${ isHaveId }" class="idcheck-content" value="확인">확인되었습니다</span>
+                                    <span th:unless="${ isHaveId }" class="idcheck-content">등록된 아이디가 없습니다</span>
+                                </th:block>
                             </li>
                             <li>
                                 <input type="submit" class="email-submit-btn" value="보내기" />
@@ -112,27 +99,30 @@
 <script src="/userAssets/lib/waypoints/waypoints.min.js"></script>
 <script src="/userAssets/lib/lightbox/js/lightbox.min.js"></script>
 <script src="/userAssets/lib/owlcarousel/owl.carousel.min.js"></script>
-<script>
+<script th:inline="javascript">
 
-    // 사용자 ID 인증
-   $('.id-check-btn').on('click', (e) => {
-       const id = $('.id-input').val();
-       location.href = `checkUser?userId=\${id}`;
-   });
+    $(function(){
 
-    $('.email-submit-btn').on('click', (e) => {
-        const idCheck = $('.idcheck-content').attr("value");
+        // 사용자 ID 인증
+       $('.id-check-btn').on('click', (e) => {
+           const id = $('.id-input').val();
+           location.href = /*[(|'checkUser?userId=' + id |)]*/'';
+       });
 
-        if (!(idCheck == "확인")) {
-            e.preventDefault();
-            window.alert("아이디를 다시 확인해주세요");
-        }
+        $('.email-submit-btn').on('click', (e) => {
+            const idCheck = $('.idcheck-content').attr("value");
 
+            if (!(idCheck == "확인")) {
+                e.preventDefault();
+                window.alert("아이디를 다시 확인해주세요");
+            }
+
+        });
+
+       $('.cancel-btn').on('click', () => {
+           location.href = "/userAccount/login";
+       });
     });
-
-   $('.cancel-btn').on('click', () => {
-       location.href = "/coffeeorderproject/userAccount/login";
-   });
 </script>
 </body>
 </html>
