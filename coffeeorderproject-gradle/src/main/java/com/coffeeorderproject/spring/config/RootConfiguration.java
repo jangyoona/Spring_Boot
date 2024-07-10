@@ -56,25 +56,25 @@ public class RootConfiguration {
 	
 	
 	@Bean
-	AccountServiceImpl accountService(UserMapper memberMapper) throws Exception {
+	AccountServiceImpl accountService(UserMapper userMapper) throws Exception {
 		AccountServiceImpl accountService = new AccountServiceImpl();
-		accountService.setUserMapper(memberMapper);
+		accountService.setUserMapper(userMapper);
 		return accountService;
 	}
 
 	@Bean
-	UserBoardService boardService(UserBoardMapper boardMapper) throws Exception {
+	UserBoardService boardService(UserBoardMapper userBoardMapper) throws Exception {
 		UserBoardServiceImpl boardService = new UserBoardServiceImpl();
-		boardService.setUserBoardMapper(boardMapper);
+		boardService.setUserBoardMapper(userBoardMapper);
 		//boardService.setTransactionTemplate(transactionTemplate()); // 이렇게 메서드로 불러도 되고, 매퍼처럼 전달인자로 받아도됨!!
 		return boardService;
 	}
 
 	@Bean
-	MyPageService myPageService(MyPageMapper myPageMapper) throws  Exception {
-		MyPageServiceImpl myPageService = new MyPageServiceImpl();
-		myPageService.setMyPageMapper(myPageMapper);
-		return myPageService;
+	MyPageService mypageService(MyPageMapper myPageMapper) throws  Exception {
+		MyPageServiceImpl mypageService = new MyPageServiceImpl();
+		mypageService.setMyPageMapper(myPageMapper);
+		return mypageService;
 	}
 	
 	

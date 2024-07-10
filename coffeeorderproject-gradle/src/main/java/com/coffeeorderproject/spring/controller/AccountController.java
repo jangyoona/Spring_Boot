@@ -1,5 +1,13 @@
 package com.coffeeorderproject.spring.controller;
 
+import com.coffeeorderproject.spring.dto.UserDto;
+import com.coffeeorderproject.spring.service.AccountService;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -9,16 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import com.coffeeorderproject.spring.dto.UserDto;
-import com.coffeeorderproject.spring.service.AccountService;
-
-import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import lombok.Setter;
 
 
 @Controller
@@ -33,6 +31,8 @@ public class AccountController {
 	
 	@GetMapping("/userAccount/login")
 	public String loginForm() {
+//		@RequestParam(defaultValue = "false") boolean loginfail, Model model
+//		model.addAttribute("loginfail", loginfail);
 		return "/userAccount/login";
 	}
 	

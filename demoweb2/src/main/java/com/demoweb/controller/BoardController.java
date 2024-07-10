@@ -1,22 +1,5 @@
 package com.demoweb.controller;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.View;
-
 import com.demoweb.common.Util;
 import com.demoweb.dto.BoardAttachDto;
 import com.demoweb.dto.BoardCommentDto;
@@ -24,9 +7,18 @@ import com.demoweb.dto.BoardDto;
 import com.demoweb.service.BoardService;
 import com.demoweb.ui.ThePager;
 import com.demoweb.view.DownloadView1;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.View;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
@@ -122,6 +114,7 @@ public class BoardController {
 		
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo); // 디테일 -> 목록으로 돌아갈 때 페이지 유지를 위해 가져온 pageNo를 다시 넘겨주기.
+		model.addAttribute("enter", "\n");
 		
 		return "/board/detail";
 	}
@@ -188,36 +181,37 @@ public class BoardController {
 	public String editBoard(BoardDto board, MultipartFile attach, HttpServletRequest req, @RequestParam(required = false) Integer pageNo) {
 		
 		if(board.getBoardNo() == 0 || pageNo == null) {
+			System.out.println("이프문 들어옴");
 			return "redirect:list";
 		}
 		
 		if(attach != null && attach.getSize() > 0) {
 			BoardAttachDto attachment = new BoardAttachDto();
 			ArrayList<BoardAttachDto> attachments = new ArrayList<>();
-			
+
 			try {
 				String dir = req.getServletContext().getRealPath("/board-attachments");
 				String userFileName = attach.getOriginalFilename();
 				String savedFileName = Util.makeUniqueFileName(userFileName);
 				attach.transferTo(new File(dir, savedFileName)); // 저장
-				
+
 				attachment.setBoardNo(board.getBoardNo());
 				attachment.setUserFileName(userFileName);
 				attachment.setSavedFileName(savedFileName);
 				attachments.add(attachment);
-			
+
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			board.setAttachments(attachments);
-			
-			try {
-				boardService.modifyBoard(board);
-			} catch (Exception e) {
-				System.out.println("글 수정 실패");
-				return String.format("redirect:edit?boardNo=%d&pageNo=%d", board.getBoardNo(), pageNo); 
-			}
 		}
+		try {
+			boardService.modifyBoard(board);
+		} catch (Exception e) {
+			System.out.println("글 수정 실패");
+			return String.format("redirect:edit?boardNo=%d&pageNo=%d", board.getBoardNo(), pageNo);
+		}
+
 		return String.format("redirect:detail?boardNo=%d&pageNo=%d", board.getBoardNo(), pageNo);
 	}
 	
@@ -248,6 +242,7 @@ public class BoardController {
 	public String listComment(int boardNo, Model model) {
 		List<BoardCommentDto> comments = boardService.findBoardCommentsByBoardNo(boardNo);
 		model.addAttribute("comments", comments);
+		model.addAttribute("enter", "\n");
 		
 		return "/board/comment-list";
 	}
