@@ -3,12 +3,19 @@ package com.coffeeorderproject.spring.dto;
 import com.coffeeorderproject.spring.entity.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserDto {
 	
 	@NotBlank(message = "아이디를 입력하세요.")
@@ -38,9 +45,23 @@ public class UserDto {
 	
 
 	public UserEntity toEntity() {
-		UserEntity entity = UserEntity.builder().userId(userId).userName(userName).userNickname(userNickname)
-							.userPhone(userPhone).userEmail(userEmail).userPw(userPw).build();
-		return entity;
+        return UserEntity.builder().userId(userId).userName(userName).userNickname(userNickname)
+								   .userPhone(userPhone).userEmail(userEmail).userPw(userPw).build();
 	}
+
+	public static UserDto of(Optional<UserEntity> entity) {
+        return entity.map(userEntity -> UserDto.builder()
+                .userId(userEntity.getUserId())
+                .userName(userEntity.getUserName())
+                .userNickname(userEntity.getUserNickname())
+                .userPhone(userEntity.getUserPhone())
+                .userEmail(userEntity.getUserEmail())
+                .userAdmin(userEntity.getUserAdmin())
+                .userRegidate((Date) userEntity.getUserRegidate())
+                .userActive(userEntity.getUserActive()).build()).orElse(null);
+	}
+
+
+
 
 }

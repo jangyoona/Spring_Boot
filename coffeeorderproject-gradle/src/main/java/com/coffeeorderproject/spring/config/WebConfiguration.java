@@ -31,8 +31,8 @@ public class WebConfiguration implements WebMvcConfigurer {
 		mailSender.setHost("smtp.naver.com");
 		mailSender.setPort(465);
 		mailSender.setDefaultEncoding("utf-8");
-		mailSender.setUsername("");
-		mailSender.setPassword("");
+		mailSender.setUsername("olozg@naver.com");
+		mailSender.setPassword("zxasqw12~!@");
 		
 		Properties props = new Properties();
 		props.put("mail.debug", true);

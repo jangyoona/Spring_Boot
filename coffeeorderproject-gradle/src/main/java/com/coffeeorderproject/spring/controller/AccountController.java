@@ -1,6 +1,7 @@
 package com.coffeeorderproject.spring.controller;
 
 import com.coffeeorderproject.spring.dto.UserDto;
+import com.coffeeorderproject.spring.entity.UserEntity;
 import com.coffeeorderproject.spring.service.AccountService;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletContext;
@@ -109,10 +110,10 @@ public class AccountController {
 	@PostMapping("/userAccount/sendMail")
 	public String sendMail(String userId, HttpSession session, HttpServletRequest req, Model model) {
 		
-		UserDto user = accountService.getUserEmail(userId);
+		String userEmail = accountService.getUserEmail(userId);
 	
 		String from = "olozg@naver.com";
-		String to = user.getUserEmail();
+		String to = userEmail;
 		String title = "비밀번호 재설정";
 		int key = (int)(Math.random() * 1000000000);
 		
@@ -127,7 +128,7 @@ public class AccountController {
 			messageHelper.setFrom(from);
 			messageHelper.setTo(new String[] {to});
 			messageHelper.setSubject(title);
-			message.setContent(String.format("<html><body><a href='http://localhost:8081/coffeeorderproject/userAccount/reset-passwd?email=%s&key=%d'>비밀번호 재설정 하기</a></body></html>", to, key),
+			message.setContent(String.format("<html><body><a href='http://localhost:8081/userAccount/reset-passwd?email=%s&key=%d'>비밀번호 재설정 하기</a></body></html>", to, key),
 											 "text/html;charset=utf-8");
 			
 			mailSender.send(message);

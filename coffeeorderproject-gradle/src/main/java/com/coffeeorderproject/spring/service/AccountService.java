@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.coffeeorderproject.spring.dto.CartDto;
 import com.coffeeorderproject.spring.dto.UserDto;
+import com.coffeeorderproject.spring.entity.UserEntity;
+import com.coffeeorderproject.spring.repository.UserRepository;
 
 public interface AccountService {
 
@@ -17,7 +19,7 @@ public interface AccountService {
 	UserDto signInUser(UserDto user);
 
 	// 사용자에게 Email 보내기
-	UserDto getUserEmail(String id);
+	String getUserEmail(String id);
 
 	// 사용자 PW Update
 	void changeUserPw(String userId, String newPw);
