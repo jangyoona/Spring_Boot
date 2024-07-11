@@ -1,21 +1,25 @@
 package com.coffeeorderproject.spring.service;
 
 
-import java.util.ArrayList;
-
 import com.coffeeorderproject.mapper.UserMapper;
 import com.coffeeorderproject.spring.common.Util;
 import com.coffeeorderproject.spring.dao.CartDao;
 import com.coffeeorderproject.spring.dao.CartDaoImpl;
 import com.coffeeorderproject.spring.dto.CartDto;
 import com.coffeeorderproject.spring.dto.UserDto;
-
+import com.coffeeorderproject.spring.entity.UserEntity;
+import com.coffeeorderproject.spring.repository.UserRepository;
 import lombok.Setter;
+
+import java.util.ArrayList;
 
 public class AccountServiceImpl implements AccountService {
 	
 	@Setter
 	private UserMapper userMapper;
+
+	@Setter
+	private UserRepository userRepository;
 	
 	// 회원가입
 	@Override
@@ -23,8 +27,11 @@ public class AccountServiceImpl implements AccountService {
 		// 비번 암호화
 		String hashedPasswd = Util.getHashedString(user.getUserPw(), "SHA-256");
 		user.setUserPw(hashedPasswd);
+
+		UserEntity userEntity = user.toEntity();
+		userRepository.save(userEntity);
 		
-		userMapper.insertUser(user);
+		//userMapper.insertUser(user);
 	}
 	
 	// 중복 아이디 검사

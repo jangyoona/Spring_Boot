@@ -1,10 +1,13 @@
-package com.coffeeorderproject.spring.config;
+package com.demoweb.config;
 
-import com.coffeeorderproject.mapper.MyPageMapper;
-import com.coffeeorderproject.mapper.UserBoardMapper;
-import com.coffeeorderproject.mapper.UserMapper;
-import com.coffeeorderproject.spring.repository.UserRepository;
-import com.coffeeorderproject.spring.service.*;
+import com.demoweb.mapper.BoardMapper;
+import com.demoweb.repository.BoardAttachRepository;
+import com.demoweb.repository.BoardRepository;
+import com.demoweb.repository.MemberRepository;
+import com.demoweb.service.AccountService;
+import com.demoweb.service.AccountServiceImpl;
+import com.demoweb.service.BoardService;
+import com.demoweb.service.BoardServiceImpl;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -24,7 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = { "com.coffeeorderproject.mapper" }) // root-context.xml의 <mybatis:scan의 역할과 동일
+@MapperScan(basePackages = { "com.demoweb.mapper" }) // root-context.xml의 <mybatis:scan의 역할과 동일
 @EnableTransactionManagement // <tx:annotation-driven과 같은 역할
 public class RootConfiguration {
 
@@ -56,27 +59,19 @@ public class RootConfiguration {
 	}
 	
 	
-	@Bean
-	AccountServiceImpl accountService(UserMapper userMapper, UserRepository userRepository) throws Exception {
+	@Bean AccountService accountService(MemberRepository memberRepository) throws Exception {
 		AccountServiceImpl accountService = new AccountServiceImpl();
-		accountService.setUserMapper(userMapper);
-		accountService.setUserRepository(userRepository);
+		accountService.setMemberRepository(memberRepository);
 		return accountService;
 	}
-
-	@Bean
-	UserBoardService boardService(UserBoardMapper userBoardMapper) throws Exception {
-		UserBoardServiceImpl boardService = new UserBoardServiceImpl();
-		boardService.setUserBoardMapper(userBoardMapper);
-		//boardService.setTransactionTemplate(transactionTemplate()); // 이렇게 메서드로 불러도 되고, 매퍼처럼 전달인자로 받아도됨!!
+	
+	@Bean BoardService boardService(BoardMapper boardMapper, BoardRepository boardRepository, BoardAttachRepository boardAttachRepository) throws Exception {
+		BoardServiceImpl boardService = new BoardServiceImpl();
+		boardService.setBoardMapper(boardMapper);
+		boardService.setBoardRepository(boardRepository);
+		boardService.setBoardAttachRepository(boardAttachRepository);
+		boardService.setTransactionTemplate(transactionTemplate()); // 이렇게 메서드로 불러도 되고, 매퍼처럼 전달인자로 받아도됨!!
 		return boardService;
-	}
-
-	@Bean
-	MyPageService mypageService(MyPageMapper myPageMapper) throws  Exception {
-		MyPageServiceImpl mypageService = new MyPageServiceImpl();
-		mypageService.setMyPageMapper(myPageMapper);
-		return mypageService;
 	}
 	
 	

@@ -1,11 +1,12 @@
 package com.coffeeorderproject.spring.dto;
 
-import java.sql.Date;
-import java.util.ArrayList;
-
+import com.coffeeorderproject.spring.entity.UserEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+
+import java.sql.Date;
+import java.util.ArrayList;
 
 @Data
 public class UserDto {
@@ -35,7 +36,11 @@ public class UserDto {
 	private int couponId;
 	private ArrayList<UserCouponDto> usercoupon;
 	
-	
-	
-	
+
+	public UserEntity toEntity() {
+		UserEntity entity = UserEntity.builder().userId(userId).userName(userName).userNickname(userNickname)
+							.userPhone(userPhone).userEmail(userEmail).userPw(userPw).build();
+		return entity;
+	}
+
 }
