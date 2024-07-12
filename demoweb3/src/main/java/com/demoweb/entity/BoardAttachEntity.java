@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 public class BoardAttachEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int attachNo;
-    @Column(nullable = false)
-    private int boardNo;
+//    @Column(nullable = false) => 자식 테이블의 경우 부모와 연결된 FK 컬럼은 넣지 않아야함. 자동으로 만들어 준다. = 여기선 BoardNo
+//    private int boardNo;
     @Column(nullable = false)
     private String userFileName;	// 사용자가 업로드한 파일 이름
     @Column(nullable = false)

@@ -18,7 +18,7 @@ import java.util.List;
 public class BoardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // 자동증가 컬럼인 경우 명시해야함
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동증가 컬럼인 경우 명시해야함
     private Integer boardNo;
     @Column(nullable = false) // not null
     private String title;
@@ -36,7 +36,7 @@ public class BoardEntity {
     @Builder.Default @Column
     private boolean deleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // LAZW?
     @JoinColumn(name = "boardNo")
     private List<BoardAttachEntity> attachments;
 

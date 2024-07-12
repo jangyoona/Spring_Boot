@@ -33,16 +33,15 @@ public class BoardDto {
 
 	// 여기부터 변환기
 	public BoardEntity toEntity(){ // Dto -> Entity 변환 메서드는 'toEntity'
-		BoardEntity boardEntity = BoardEntity.builder()
+        return BoardEntity.builder()
 											.title(title)
 											.writer(writer)
 											.content(content)
-							//				.writeDate(writeDate)
-							//				.modifyDate(modifyDate)
+//											.writeDate(writeDate) // Entity에서 Defalut값 설정했으면, 여기서 값 넣어주면 안됨xx
+//											.modifyDate(modifyDate) // Entity에서 Defalut값 설정했으면, 여기서 값 넣어주면 안됨xx
 											.readCount(readCount)
 											.deleted(deleted)
 											.build();
-		return boardEntity;
 	}
 
 	public static BoardDto of(BoardEntity entity) { // Entity -> Dto 변환 메서드는 'of'

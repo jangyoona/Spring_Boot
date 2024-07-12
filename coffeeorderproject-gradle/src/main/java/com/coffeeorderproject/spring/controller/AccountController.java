@@ -1,7 +1,6 @@
 package com.coffeeorderproject.spring.controller;
 
 import com.coffeeorderproject.spring.dto.UserDto;
-import com.coffeeorderproject.spring.entity.UserEntity;
 import com.coffeeorderproject.spring.service.AccountService;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletContext;

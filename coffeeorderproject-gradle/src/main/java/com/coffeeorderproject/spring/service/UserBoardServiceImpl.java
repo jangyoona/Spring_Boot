@@ -1,22 +1,26 @@
 package com.coffeeorderproject.spring.service;
 
+import com.coffeeorderproject.mapper.UserBoardMapper;
+import com.coffeeorderproject.spring.dto.*;
+import com.coffeeorderproject.spring.entity.BoardEntity;
+import com.coffeeorderproject.spring.repository.BoardRepository;
+import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.coffeeorderproject.mapper.UserBoardMapper;
-import com.coffeeorderproject.spring.dto.BoardAttachDto;
-import com.coffeeorderproject.spring.dto.BoardCommentDto;
-import com.coffeeorderproject.spring.dto.BoardDto;
-import com.coffeeorderproject.spring.dto.ProductDto;
-import com.coffeeorderproject.spring.dto.UserOrderDto;
-
-import lombok.Setter;
 
 
 public class UserBoardServiceImpl implements UserBoardService {
 	
 	@Setter
 	private UserBoardMapper userBoardMapper;
+
+	@Setter
+	private BoardRepository boardRepository;
 	
 	
 	@Override
@@ -28,15 +32,25 @@ public class UserBoardServiceImpl implements UserBoardService {
 	
 	@Override
 	public int getBoardCount() {
-		int boardCount = userBoardMapper.selectBoardCount();
-		return boardCount;
+
+		return (int)boardRepository.count();
+
 	}
 	
 	@Override
-	public List<BoardDto> findReviewBoardByRange(int start, int count) {
+	public List<BoardDto> findReviewBoardByRange(int pageNo, int count) {
 
-		List<BoardDto> board = userBoardMapper.selectReviewBoardByRange(start, count);
-		return board;
+		Pageable pageable = PageRequest.of(pageNo, count, Sort.by(Sort.Direction.DESC, "boardNo"));
+		Page<BoardEntity> page = boardRepository.findAll(pageable);
+		List<BoardDto> boards = new ArrayList<>();
+
+		for(BoardEntity boardEntity : page.getContent()) {
+			boards.add(BoardDto.of(boardEntity));
+		}
+		return boards;
+
+		//List<BoardDto> board = userBoardMapper.selectReviewBoardByRange(start, count);
+		//return board;
 
 	}
 	

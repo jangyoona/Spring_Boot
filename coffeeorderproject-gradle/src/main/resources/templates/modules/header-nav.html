@@ -52,7 +52,7 @@
                     <th:block th:if="${ #ctx.session.loginUser != null }">
                     <a href="/hollysProduct/cart-product" class="position-relative me-4 my-auto">
                         <i class="fa fa-shopping-bag fa-2x"></i>
-                        <span th:text="${ #ctx.application.appUserCart != null and #ctx.application.appUserCart.size() }"
+                        <span th:if="${ #ctx.application.appUserCart != null and #ctx.application.appUserCart.size() }" th:text="${ #ctx.session.loginUser.usercoupon }"
                         class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
                             <!--[[${ #ctx.application == null ? 0 : #ctx.application.appUserCart.size() }]]-->
                         </span>

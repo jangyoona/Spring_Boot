@@ -17,6 +17,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BoardServiceImpl implements BoardService {
 
@@ -38,18 +39,17 @@ public class BoardServiceImpl implements BoardService {
 	public void writeBoard(BoardDto board) {
 	
 		BoardEntity boardEntity = board.toEntity();
-		boardRepository.save(boardEntity);
+		//boardRepository.save(boardEntity);
 
 		List<BoardAttachEntity> attachments = new ArrayList<>();
 
 		for (BoardAttachDto attach : board.getAttachments()) {
-			attach.setBoardNo(boardEntity.getBoardNo());
+			//attach.setBoardNo(boardEntity.getBoardNo());
 			attachments.add(attach.toEntity());
-			boardAttachRepository.save(attach.toEntity());
+		//	boardAttachRepository.save(attach.toEntity());
 		}
-		//boardEntity.setAttachments(attachments);
-
-		//boardRepository.save(boardEntity); // insert or update
+		boardEntity.setAttachments(attachments);
+		boardRepository.save(boardEntity); // insert or update
 
 	}
 	
@@ -95,62 +95,81 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardDto findBoardByBoardNo(int boardNo) {
 		
-		// 게시글 조회
-		BoardDto board = boardMapper.selectBoardByBoardNo(boardNo);
-		
-//		// 첨부파일 조회
-		List<BoardAttachDto> attaches = boardMapper.selectBoardAttachByBoardNo(boardNo);		
-		board.setAttachments(attaches);
-//		
+		Optional<BoardEntity> entity = boardRepository.findById(boardNo);
+		if(entity.isPresent()) {
+			BoardEntity boardEntity = entity.get();
+			BoardDto board = BoardDto.of(boardEntity);
+//			List<BoardAttachDto> attachments = new ArrayList<>();
+//			for(BoardAttachEntity entity2 : boardEntity.getAttachments()) {
+//				attachments.add(BoardAttachDto.of(entity2));
+//			}
+			List<BoardAttachDto> attachments =
+										boardEntity.getAttachments().stream()
+										.map(BoardAttachDto::of)
+										.toList();
+			board.setAttachments(attachments);
+			return board;
+		} else {
+			return null;
+		}
+		// return entity.isPresent() ? BoardDto.of(entity.get()) : null; 축약버전으로 이것도 가능함. 선생님 쩐당
+
 //		// 댓글 조회
 //		List<BoardCommentDto> comments = boardMapper.selectBoardCommentByBoardNo(boardNo);
 //		board.setComments(comments);
 		
-		return board;
-		
 	}
 	
-	@Override
-	public BoardDto findBoardByBoardNo2(int boardNo) { // 한꺼번에 조회하는 방식 (XML 참조)
-		
-		// 게시글+첨부파일 조회
-//		BoardDto board = boardMapper.selectBoardByBoardNo2(boardNo); // resultMap으로 1:n 엮은 방법
-//		BoardDto board = boardMapper.selectBoardByBoardNo3(boardNo); // select 속성 방법
-		BoardDto board = boardMapper.selectBoardByBoardNo4(boardNo); // collection - ofType 속성을 사용한 방법 (재사용x)
-		return board;
-		
-	}
+
+//	public BoardDto findBoardByBoardNo2(int boardNo) { // 한꺼번에 조회하는 방식 (XML 참조)
+//
+//		// 게시글+첨부파일 조회
+//		BoardDto board = boardMapper.selectBoardByBoardNo4(boardNo); // collection - ofType 속성을 사용한 방법 (재사용x)
+//		return board;
+//
+//	}
 	
 
 	@Override
 	public BoardAttachDto findBoardAttachByAttachNo(int attachNo) {
-		BoardAttachDto attach = boardMapper.selectBoardAttachByAttachNo(attachNo);
-		return attach;
+		//Optional<BoardAttachEntity> entity = boardAttachRepository.findById(attachNo);
+		BoardAttachEntity entity = boardRepository.findBoardAttachByAttachNo(attachNo);
+		return BoardAttachDto.of(entity);
 	}
 
 	@Override
 	public void deleteBoard(int boardNo) {
-		boardMapper.updateBoardDeleted(boardNo);
-		
+		BoardEntity entity = boardRepository.findById(boardNo).get();
+		// boardRepository.delete(entity); // 실제 데이터 삭제
+		entity.setDeleted(true);
+		boardRepository.save(entity);
 	}
 
 	@Override
 	public void deleteBoardAttach(int attachNo) {
 		
-		boardMapper.deleteBoardAttach(attachNo);
-		
+		//boardAttachRepository.deleteById(attachNo); // 편집 페이지 첨부파일 삭제 방법-1
+		//BoardAttachEntity entity = boardRepository.findBoardAttachByAttachNo(attachNo); // 편집 페이지 첨부파일 삭제 이렇게해도됨 방법-2
+		//boardAttachRepository.delete(entity);// 편집 페이지 첨부파일 삭제 이렇게해도됨
+		boardRepository.deleteBoardAttachByAttachNo(attachNo); // 방법-3
+
 	}
 
 	@Override
 	public void modifyBoard(BoardDto board) {
-		
-		boardMapper.updateBoard(board);
+
+		BoardEntity entity = boardRepository.findById(board.getBoardNo()).get();
+		entity.setTitle(board.getTitle());
+		entity.setContent(board.getContent());
+		boardRepository.save(entity);
+
 		if(board.getAttachments() != null) {
 			for (BoardAttachDto attach : board.getAttachments()) {
-				boardMapper.insertBoardAttach(attach);
+				boardRepository.insertBoardAttach(attach.getBoardNo(), attach.getUserFileName(), attach.getSavedFileName());
 			}
+			//entity.setAttachments(attaches);
 		}
-		
+
 	}
 
 	@Override

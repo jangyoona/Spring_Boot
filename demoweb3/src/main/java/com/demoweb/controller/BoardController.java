@@ -110,13 +110,12 @@ public class BoardController {
 		if(boardNo == null) { // 요청 데이터의 값이 없는 경우 = null이 들어올 경우를 대비해 Integer 래퍼 타입으로 지정함.
 			return "redirect:/board/list";
 		}
-//		BoardDto board = boardService.findBoardByBoardNo(boardNo); // 게시글, 첨부파일 따로따로 조회하는 방식
-		BoardDto board = boardService.findBoardByBoardNo2(boardNo); // 한번에 조회하는 방식
+		BoardDto board = boardService.findBoardByBoardNo(boardNo);
 		
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo); // 디테일 -> 목록으로 돌아갈 때 페이지 유지를 위해 가져온 pageNo를 다시 넘겨주기.
 		model.addAttribute("enter", "\n");
-		
+		//System.out.println(board.getTitle());
 		return "/board/detail";
 	}
 	

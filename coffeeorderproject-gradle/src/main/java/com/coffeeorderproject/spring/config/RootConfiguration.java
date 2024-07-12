@@ -3,6 +3,7 @@ package com.coffeeorderproject.spring.config;
 import com.coffeeorderproject.mapper.MyPageMapper;
 import com.coffeeorderproject.mapper.UserBoardMapper;
 import com.coffeeorderproject.mapper.UserMapper;
+import com.coffeeorderproject.spring.repository.BoardRepository;
 import com.coffeeorderproject.spring.repository.UserRepository;
 import com.coffeeorderproject.spring.service.*;
 import com.zaxxer.hikari.HikariConfig;
@@ -65,9 +66,10 @@ public class RootConfiguration {
 	}
 
 	@Bean
-	UserBoardService boardService(UserBoardMapper userBoardMapper) throws Exception {
+	UserBoardService boardService(UserBoardMapper userBoardMapper, BoardRepository boardRepository) throws Exception {
 		UserBoardServiceImpl boardService = new UserBoardServiceImpl();
 		boardService.setUserBoardMapper(userBoardMapper);
+		boardService.setBoardRepository(boardRepository);
 		//boardService.setTransactionTemplate(transactionTemplate()); // 이렇게 메서드로 불러도 되고, 매퍼처럼 전달인자로 받아도됨!!
 		return boardService;
 	}

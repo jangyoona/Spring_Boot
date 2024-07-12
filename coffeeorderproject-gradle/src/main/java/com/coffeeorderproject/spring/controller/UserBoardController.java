@@ -1,7 +1,14 @@
 package com.coffeeorderproject.spring.controller;
 
-import java.util.List;
-
+import com.coffeeorderproject.spring.dto.BoardAttachDto;
+import com.coffeeorderproject.spring.dto.BoardCommentDto;
+import com.coffeeorderproject.spring.dto.BoardDto;
+import com.coffeeorderproject.spring.dto.ProductDto;
+import com.coffeeorderproject.spring.service.UserBoardService;
+import com.coffeeorderproject.spring.ui.DownloadView;
+import com.coffeeorderproject.spring.ui.ThePager;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 
-import com.coffeeorderproject.spring.dto.BoardAttachDto;
-import com.coffeeorderproject.spring.dto.BoardCommentDto;
-import com.coffeeorderproject.spring.dto.BoardDto;
-import com.coffeeorderproject.spring.dto.ProductDto;
-import com.coffeeorderproject.spring.service.UserBoardService;
-import com.coffeeorderproject.spring.ui.DownloadView;
-import com.coffeeorderproject.spring.ui.ThePager;
-
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Setter;
+import java.util.List;
 
 @Controller
 public class UserBoardController {
@@ -50,7 +48,7 @@ public class UserBoardController {
 		
 		ThePager pager = new ThePager(dataCount, pageNo, pageSize, pagerSize, linkUrl, queryString);
 		
-		List<BoardDto> boardList = boardService.findReviewBoardByRange(start, pageSize);
+		List<BoardDto> boardList = boardService.findReviewBoardByRange(pageNo-1, pageSize);
 		List<ProductDto> prodList = boardService.findProdNameList();
 		
 		model.addAttribute("prodList", prodList);

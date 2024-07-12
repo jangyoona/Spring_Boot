@@ -21,11 +21,19 @@ public class BoardAttachDto {
 
 	public BoardAttachEntity toEntity(){
 		return BoardAttachEntity.builder()
-				.attachNo(attachNo)
-				.boardNo(boardNo)
+//				.attachNo(attachNo) // 처음에는 없는 컬럼이라 의미가 없다고 함?
+//				.boardNo(boardNo)
 				.userFileName(userFileName)
 				.savedFileName(savedFileName)
 				.downloadCount(downloadCount).build();
+	}
+
+	public static BoardAttachDto of(BoardAttachEntity entity){
+		return BoardAttachDto.builder()
+				.attachNo(entity.getAttachNo())
+				.userFileName(entity.getUserFileName())
+				.savedFileName(entity.getSavedFileName())
+				.downloadCount(entity.getDownloadCount()).build();
 	}
 	
 
