@@ -133,16 +133,40 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardAttachDto findBoardAttachByAttachNo(int attachNo) {
 		//Optional<BoardAttachEntity> entity = boardAttachRepository.findById(attachNo);
+
+//		BoardAttachEntity entity = boardRepository.findBoardAttachByAttachNo(attachNo);
+//		return BoardAttachDto.of(entity);
+
 		BoardAttachEntity entity = boardRepository.findBoardAttachByAttachNo(attachNo);
-		return BoardAttachDto.of(entity);
+		if (entity != null) {
+			return BoardAttachDto.of(entity);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public void deleteBoard(int boardNo) {
-		BoardEntity entity = boardRepository.findById(boardNo).get();
+//		BoardEntity entity = boardRepository.findById(boardNo).get();
 		// boardRepository.delete(entity); // 실제 데이터 삭제
-		entity.setDeleted(true);
-		boardRepository.save(entity);
+//		entity.setDeleted(true);
+//		boardRepository.save(entity);
+
+		// 윤아 남자친구 코드
+		// ifPresnet() 방식
+		Optional<BoardEntity> boardEntity = boardRepository.findById(boardNo);
+		boardEntity.ifPresent(entity -> {
+			entity.setDeleted(true);
+			boardRepository.save(entity);
+		});
+
+		// isPresent() 방식
+//		Optional<BoardEntity> entity = boardRepository.findById(boardNo);
+//		if (entity.isPresent()) {
+//			BoardEntity boardEntity = entity.get();
+//			boardEntity.setDeleted(true);
+//			boardRepository.save(boardEntity);
+//		}
 	}
 
 	@Override

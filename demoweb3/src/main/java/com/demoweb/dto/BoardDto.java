@@ -45,7 +45,7 @@ public class BoardDto {
 	}
 
 	public static BoardDto of(BoardEntity entity) { // Entity -> Dto 변환 메서드는 'of'
-		BoardDto boardDto = BoardDto.builder()
+        return BoardDto.builder()
 									.boardNo(entity.getBoardNo())
 									.title(entity.getTitle())
 									.writer(entity.getWriter())
@@ -55,7 +55,6 @@ public class BoardDto {
 									.modifyDate(entity.getModifyDate())
 									.deleted(entity.isDeleted())
 									.build();
-		return boardDto;
 	}
 
 }

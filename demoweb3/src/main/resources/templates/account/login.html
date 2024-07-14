@@ -52,19 +52,21 @@
     $(function() {
 
         $('#cancel-btn').on("click", function(event) {
-            location.href = "/spring-demoweb/home";
+            location.href = "/home";
         });
 
         $('#reset-pwd-btn').on("click", function(event) {
-            location.href = "/spring-demoweb/account/reset-passwd";
+            location.href = "reset-passwd";
         });
 
-        <%-- 서블릿에서 로그인 실패 후 forward로 이동한 경우 --%>
+        <!-- 서블릿에서 로그인 실패 후 forward로 이동한 경우 -->
         <% if (request.getAttribute("loginfail") != null) { %>
         alert("로그인 실패 (forward)");
         <% } %>
 
-        <%-- 서블릿에서 로그인 실패 후 redirect로 이동한 경우 --%>
+
+
+        <!-- 서블릿에서 로그인 실패 후 redirect로 이동한 경우 -->
         <% if (request.getParameter("loginfail") != null) { %>
         alert("로그인 실패 (redirect)");
         location.href = "login";

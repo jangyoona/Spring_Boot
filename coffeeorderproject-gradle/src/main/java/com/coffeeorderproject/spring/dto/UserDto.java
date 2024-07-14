@@ -49,16 +49,29 @@ public class UserDto {
 								   .userPhone(userPhone).userEmail(userEmail).userPw(userPw).build();
 	}
 
-	public static UserDto of(Optional<UserEntity> entity) {
-        return entity.map(userEntity -> UserDto.builder()
-                .userId(userEntity.getUserId())
-                .userName(userEntity.getUserName())
-                .userNickname(userEntity.getUserNickname())
-                .userPhone(userEntity.getUserPhone())
-                .userEmail(userEntity.getUserEmail())
-                .userAdmin(userEntity.getUserAdmin())
-                .userRegidate((Date) userEntity.getUserRegidate())
-                .userActive(userEntity.getUserActive()).build()).orElse(null);
+//	public static UserDto of(Optional<UserEntity> entity) {
+//        return entity.map(userEntity -> UserDto.builder()
+//                .userId(userEntity.getUserId())
+//                .userName(userEntity.getUserName())
+//                .userNickname(userEntity.getUserNickname())
+//                .userPhone(userEntity.getUserPhone())
+//                .userEmail(userEntity.getUserEmail())
+//                .userAdmin(userEntity.getUserAdmin())
+//                .userRegidate((Date) userEntity.getUserRegidate())
+//                .userActive(userEntity.getUserActive()).build()).orElse(null);
+//	}
+
+	// 윤아 남자친구 코드
+	public static UserDto of(UserEntity userEntity) {
+		return UserDto.builder()
+				.userId(userEntity.getUserId())
+				.userName(userEntity.getUserName())
+				.userNickname(userEntity.getUserNickname())
+				.userPhone(userEntity.getUserPhone())
+				.userEmail(userEntity.getUserEmail())
+				.userAdmin(userEntity.getUserAdmin())
+				.userRegidate((Date) userEntity.getUserRegidate())
+				.userActive(userEntity.getUserActive()).build();
 	}
 
 

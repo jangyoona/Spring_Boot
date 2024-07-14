@@ -55,13 +55,17 @@ public class AccountServiceImpl implements AccountService {
 //			return member;
 //		}
 		String hashedPasswd = Util.getHashedString(user.getUserPw(), "SHA-256");
-		Optional<UserEntity> optionalUser = Optional.ofNullable(userRepository.findUserByUserIdAndUserPw(user.getUserId(), hashedPasswd));
+//		Optional<UserEntity> optionalUser = Optional.ofNullable(userRepository.findUserByUserIdAndUserPw(user.getUserId(), hashedPasswd));
 
-		if (optionalUser.isPresent()) {
-			return UserDto.of(optionalUser); // 비어있지 않으면 of로 변환해서 반환
-		} else {
-			return null;
-		}
+//		if (optionalUser.isPresent()) {
+//			return UserDto.of(optionalUser); // 비어있지 않으면 of로 변환해서 반환
+//		} else {
+//			return null;
+//		}
+
+		// 윤아 남자친구 코드
+		UserEntity entity = userRepository.findUserByUserIdAndUserPw(user.getUserId(), hashedPasswd);
+		return UserDto.of(entity);
 
 	}
 
