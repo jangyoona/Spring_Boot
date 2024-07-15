@@ -1,6 +1,7 @@
 package com.demoweb.repository;
 
 import com.demoweb.entity.BoardAttachEntity;
+import com.demoweb.entity.BoardCommentEntity;
 import com.demoweb.entity.BoardEntity;
 import jakarta.transaction.Transactional;
 import org.apache.ibatis.annotations.Param;
@@ -17,6 +18,10 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     @Query(value = "SELECT ba FROM BoardAttachEntity ba WHERE ba.attachNo = :attachNo") // JPQL이라고 부름 => JPA 쿼리랭귀지
     BoardAttachEntity findBoardAttachByAttachNo(@Param("attachNo") int attachNo);
 
+    @Query(value = "SELECT bc FROM BoardCommentEntity bc WHERE bc.commentNo = :commentNo")
+    BoardCommentEntity findBoardCommentByAttachNo(@Param("commentNo") int commentNo);
+
+
     // 수정할 때는 modifying이랑, Transactional 넣어야함.
     @Modifying
     @Transactional
@@ -24,9 +29,4 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     void deleteBoardAttachByAttachNo(@Param("attachNo") int attachNo);
 
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO tbl_boardattach(boardNo, userFileName, savedFileName, downloadCount)" +
-                  "VALUES(?, ?, ?, 0)", nativeQuery = true)
-    void insertBoardAttach(@Param("boardNo") int boardNo, @Param("userFileName") String userFileName, @Param("savedFileName") String savedFileName);
 }

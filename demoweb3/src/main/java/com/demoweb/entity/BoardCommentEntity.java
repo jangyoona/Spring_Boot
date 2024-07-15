@@ -20,7 +20,7 @@ public class BoardCommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentNo;
 //    @Column(nullable = false)
-//    private int boardNo; => 자식 테이블의 경우 부모와 연결된 FK 컬럼은 넣지 않아야함. 자동으로 만들어 준다. = 여기선 BoardNo
+//    private int boardNo; => (단방향 관계) 부모와 연결된 FK 컬럼은 넣지 않아야함. 자동으로 만들어 준다.
     @Column(nullable = false, length = 500)
     private String content;
     @Column(nullable = false)
@@ -39,4 +39,8 @@ public class BoardCommentEntity {
     private int step;
     @Column(nullable = false)
     private int depth;
+
+    @ManyToOne
+    @JoinColumn(name = "boardNo")
+    private BoardEntity board;
 }

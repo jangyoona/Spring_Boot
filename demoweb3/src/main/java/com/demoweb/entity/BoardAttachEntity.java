@@ -17,7 +17,7 @@ public class BoardAttachEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int attachNo;
-//    @Column(nullable = false) => 자식 테이블의 경우 부모와 연결된 FK 컬럼은 넣지 않아야함. 자동으로 만들어 준다. = 여기선 BoardNo
+//    @Column(nullable = false) => (단방향 관계) 부모와 연결된 FK 컬럼은 넣지 않아야함. 자동으로 만들어 준다.
 //    private int boardNo;
     @Column(nullable = false)
     private String userFileName;	// 사용자가 업로드한 파일 이름
@@ -26,4 +26,8 @@ public class BoardAttachEntity {
 
     @Column @Builder.Default
     private int downloadCount = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "boardNo")
+    private BoardEntity board;
 }

@@ -246,6 +246,7 @@ public class BoardController {
 		
 		return "/board/comment-list";
 	}
+
 	
 
 	

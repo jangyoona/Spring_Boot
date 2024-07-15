@@ -7,7 +7,6 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Properties;
@@ -15,11 +14,11 @@ import java.util.Properties;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInterceptor()).addPathPatterns("/board/**")
-												  .excludePathPatterns("/board/list", "/board/detail");
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(authInterceptor()).addPathPatterns("/board/**")
+//												  .excludePathPatterns("/board/list", "/board/detail");
+//	}
 	
 	@Bean
 	public AuthInterceptor authInterceptor() {

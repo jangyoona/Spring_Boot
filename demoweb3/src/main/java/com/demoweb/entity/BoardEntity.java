@@ -36,12 +36,15 @@ public class BoardEntity {
     @Builder.Default @Column
     private boolean deleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // LAZW?
-    @JoinColumn(name = "boardNo")
+    // mappedBy? (양방향 관계)에서만 사용하는 속성 // 부모 클래스에서 명시.
+    // fetch? 부모데이터 가져올 때 자식도 바로 가져올거니?
+    // cascade? 부모데이터에 변경사항이 있을 때 자식에도 반영할거니?
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.ALL) // LAZW?
+    // @JoinColumn(name = "boardNo") => 양방향 관계는 자식쪽에서 Join걸면됨
     private List<BoardAttachEntity> attachments;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardNo")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//  @JoinColumn(name = "boardNo")
     private List<BoardCommentEntity> comments;
 
 }

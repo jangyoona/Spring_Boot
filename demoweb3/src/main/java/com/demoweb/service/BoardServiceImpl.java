@@ -4,6 +4,7 @@ import com.demoweb.dto.BoardAttachDto;
 import com.demoweb.dto.BoardCommentDto;
 import com.demoweb.dto.BoardDto;
 import com.demoweb.entity.BoardAttachEntity;
+import com.demoweb.entity.BoardCommentEntity;
 import com.demoweb.entity.BoardEntity;
 import com.demoweb.mapper.BoardMapper;
 import com.demoweb.repository.BoardAttachRepository;
@@ -41,13 +42,27 @@ public class BoardServiceImpl implements BoardService {
 		BoardEntity boardEntity = board.toEntity();
 		//boardRepository.save(boardEntity);
 
-		List<BoardAttachEntity> attachments = new ArrayList<>();
+		// 단방향은 이거면 됨.
+//		List<BoardAttachEntity> attachments = new ArrayList<>();
+//		for (BoardAttachDto attach : board.getAttachments()) {
+//			attachments.add(attach.toEntity());
+//		}
 
-		for (BoardAttachDto attach : board.getAttachments()) {
-			//attach.setBoardNo(boardEntity.getBoardNo());
-			attachments.add(attach.toEntity());
-		//	boardAttachRepository.save(attach.toEntity());
-		}
+		// 방법 1. 우리 수준에선 뭘 쓰던 똑같음. -양방향
+//		List<BoardAttachEntity> attachments = new ArrayList<>();
+//		for (BoardAttachDto attach : board.getAttachments()) {
+//			BoardAttachEntity attachEntity = attach.toEntity();
+//			attachEntity.setBoard(boardEntity);
+//			attachments.add(attachEntity);
+//		}
+
+		// 방법 2. 대량의 데이터를 처리할 때 더 좋은 방법임. -양방향
+		List<BoardAttachEntity> attachments = board.getAttachments().stream().map(attach -> {
+			BoardAttachEntity attachEntity = attach.toEntity();
+			attachEntity.setBoard(boardEntity);
+			return attachEntity;
+		}).toList();
+
 		boardEntity.setAttachments(attachments);
 		boardRepository.save(boardEntity); // insert or update
 
@@ -183,32 +198,51 @@ public class BoardServiceImpl implements BoardService {
 	public void modifyBoard(BoardDto board) {
 
 		BoardEntity entity = boardRepository.findById(board.getBoardNo()).get();
+		// 수정
 		entity.setTitle(board.getTitle());
 		entity.setContent(board.getContent());
-		boardRepository.save(entity);
 
 		if(board.getAttachments() != null) {
-			for (BoardAttachDto attach : board.getAttachments()) {
-				boardRepository.insertBoardAttach(attach.getBoardNo(), attach.getUserFileName(), attach.getSavedFileName());
-			}
-			//entity.setAttachments(attaches);
+			List<BoardAttachEntity> attachEntities =
+					board.getAttachments().stream().map((attach) -> {
+						BoardAttachEntity attachEntity = attach.toEntity();
+						attachEntity.setBoard(entity);
+						return attachEntity;
+					}).toList();
+			// 선생님 코멘트 : Parent(Board)는 find로 조회해와서 영속성박스에 들어왔지만, child(attach)의 경우
+//			entity.setAttachments(attachEntities); // 이렇게 처리하면 안됨. 영속성 컨텍스트 밖의 데이터와 안의 데이터를 바꿔치기할 시 동기화 문제로 에러? - google
+			entity.getAttachments().addAll(attachEntities); // 영속성 컨텍스트 안의 데이터 유지 -정상적으로 조회해 온 데이터를 get으로 불러와서 -> .addAll()으로 추가해 주는 방식을 사용
+
 		}
+		// 수정된 내용 save
+		boardRepository.save(entity);
+
+
 
 	}
 
 	@Override
 	public void writeComment(BoardCommentDto comment) {
-		
-		boardMapper.insertComment(comment);
-		
+
+		BoardEntity boardEntity = boardRepository.findById(comment.getBoardNo()).get();
+		BoardCommentEntity commentEntity = comment.toEntity();
+		commentEntity.setBoard(boardEntity);
+		boardEntity.getComments().add(commentEntity);
+		boardRepository.save(boardEntity);
+
+
 	}
 
 
 
 	@Override
 	public List<BoardCommentDto> findBoardCommentsByBoardNo(int boardNo) {
-		
-		List<BoardCommentDto> comments = boardMapper.selectBoardCommentsByBoardNo(boardNo);
+
+		// 이렇게하면 조인을 해야되서 성능이 약간 손해지만 빨리하기 위해서 이렇게했다거함 (보드를 가져오면 커멘트가 딸려오잖아 그걸 이용하는 방법임)
+		List<BoardCommentEntity> commentEntities = boardRepository.findById(boardNo).get().getComments();
+		List<BoardCommentDto> comments = commentEntities.stream().map(BoardCommentDto::of).toList();
+
+//		List<BoardCommentDto> comments = boardMapper.selectBoardCommentsByBoardNo(boardNo);
 		return comments;
 	}
 
