@@ -1,0 +1,30 @@
+<div id="header" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+    <div class="title">
+        <a href="/home">DEMO WEBSITE</a>
+    </div>
+    <div class="links">
+        <th:block sec:authorize="isAnonymous()">
+            <a href="/login">로그인</a>
+            <a href="/account/register">회원가입</a>
+        </th:block>
+        <th:block sec:authorize="isAuthenticated()">
+            [[${ #authentication.principal.Username }]]님 환영합니다. <!--principal? 인증된 사용자라는 뜻-->
+            <a href="/logout">로그아웃</a>
+        </th:block>
+
+    </div>
+</div>
+
+<div id="menu">
+    <div>
+        <ul>
+            <li><a href="#" th:text="#{ menu.admin }"></a></li>
+            <li><a href="/mail/send-mail" th:text="#{ menu.email }"></a></li>
+            <li><a href="#" th:text="#{ menu.library }"></a></li>
+            <li><a href="/board/list" th:text="#{ menu.board }"></a></li>
+        </ul>
+    </div>
+</div>
