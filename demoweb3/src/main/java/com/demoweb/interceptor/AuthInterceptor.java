@@ -1,12 +1,10 @@
 package com.demoweb.interceptor;
 
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.demoweb.dto.MemberDto;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 public class AuthInterceptor implements HandlerInterceptor{
 	
@@ -16,7 +14,6 @@ public class AuthInterceptor implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 //		System.out.println("AuthInterceptor.preHandle");
-		
 		MemberDto member = (MemberDto)request.getSession().getAttribute("loginuser");
 		String uri = request.getRequestURI();
 		if(uri.contains("write") || uri.contains("edit") || uri.contains("delete")) {

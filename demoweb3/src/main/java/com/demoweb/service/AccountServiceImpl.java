@@ -3,9 +3,13 @@ package com.demoweb.service;
 import com.demoweb.common.Util;
 import com.demoweb.dto.MemberDto;
 import com.demoweb.entity.MemberEntity;
+import com.demoweb.entity.RoleEntity;
 import com.demoweb.repository.MemberRepository;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -23,6 +27,12 @@ public class AccountServiceImpl implements AccountService {
 		member.setPasswd(hashedPasswd);
 
 		MemberEntity memberEntity = member.toEntity();
+
+		RoleEntity role = memberRepository.findRoleByRoleName(member.getUserType());
+		Set<RoleEntity> roles = new HashSet<>();
+		roles.add(role);
+		memberEntity.setRoles(roles);
+
 		memberRepository.save(memberEntity); // entity 저장 => insert or update
 
 	}

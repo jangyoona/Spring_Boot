@@ -27,22 +27,21 @@ public class MemberDto {
 	@Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$",
 			 message = "이메일 형식 오류")
 	private String email;
-	private String userType;
+
+	@Builder.Default
+	private String userType = "ROLE_USER";
 	private Date regDate;
 	private boolean active;
 
 
 
 	public MemberEntity toEntity() { // Dto -> Entity로 값을 넘겨주기 위해 생성한 메서드 (타입이 다르기 때문에)
-		MemberEntity memberEntity = MemberEntity.builder().memberId(memberId).passwd(passwd).email(email).build();
-		return memberEntity;
+        return MemberEntity.builder().memberId(memberId).passwd(passwd).email(email).userType(userType).build();
 	}
 
 	public static MemberDto of(MemberEntity memberEntity) { // Entity(DB에서 넘어온 데이터) -> Dto(view)로 넘겨주기 위해 생성한 메서드 (타입이 다르기 때문에)
-		MemberDto memberDto = MemberDto.builder().memberId(memberEntity.getMemberId()).email(memberEntity.getEmail())
-				           .userType(memberEntity.getUserType()).regDate(memberEntity.getRegDate())
-					       .build();
-		return memberDto;
+        return MemberDto.builder().memberId(memberEntity.getMemberId()).passwd(memberEntity.getPasswd())
+				.email(memberEntity.getEmail()).userType(memberEntity.getUserType()).regDate(memberEntity.getRegDate()).build();
 	}
 	
 }
