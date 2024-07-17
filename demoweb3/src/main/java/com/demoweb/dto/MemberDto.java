@@ -40,8 +40,14 @@ public class MemberDto {
 	}
 
 	public static MemberDto of(MemberEntity memberEntity) { // Entity(DB에서 넘어온 데이터) -> Dto(view)로 넘겨주기 위해 생성한 메서드 (타입이 다르기 때문에)
-        return MemberDto.builder().memberId(memberEntity.getMemberId()).passwd(memberEntity.getPasswd())
-				.email(memberEntity.getEmail()).userType(memberEntity.getUserType()).regDate(memberEntity.getRegDate()).build();
+        return MemberDto.builder()
+								.memberId(memberEntity.getMemberId())
+								.passwd(memberEntity.getPasswd())
+								.email(memberEntity.getEmail())
+								.userType(memberEntity.getUserType())
+								.regDate(memberEntity.getRegDate())
+								.active(memberEntity.isActive())
+								.build();
 	}
 	
 }

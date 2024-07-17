@@ -40,9 +40,13 @@ public class SecurityConfiguration {
                         .loginPage("/account/login") // <spring-security가 가지고 있는 몬생긴 form말고, 이쪽 화면에서 처리할게 라는 커스텀 설정>
                         .usernameParameter("memberId") // <input name="유저Id 커스텀 설정">
                         .passwordParameter("passwd") // <input name="유저Pw 커스텀 설정">
-                        .loginProcessingUrl("/account/process-login")); // <form action="경로 커스텀 설정">
+                        .loginProcessingUrl("/account/process-login"))
+                .logout((logout) -> logout
+                        .logoutUrl("/account/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/home"));
 //                .and() // 나중에 찾아서 작성
-//                .logout(); // 나중에 찾아서 작성
 
         return http.build();
     }

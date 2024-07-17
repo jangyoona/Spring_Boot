@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AuthenticationEventListener implements ApplicationListener<InteractiveAuthenticationSuccessEvent> {
 
-    @Setter
+    @Setter(onMethod_ = @Autowired)
     private LoginAttemptRepository loginAttemptRepository;
     private final HttpServletRequest request;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationEventListener.class);
