@@ -2,10 +2,14 @@ package com.demoweb.security;
 
 import com.demoweb.dto.MemberDto;
 import com.demoweb.dto.RoleDto;
+import com.demoweb.entity.MemberEntity;
+import com.demoweb.repository.MemberRepository;
 import lombok.Data;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +29,8 @@ public class DemoWebUserDetails implements UserDetails {
 		this.member = member;
 		this.roles = roles;
 	}
+
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() { // 권한 목록을 주는 오버라이딩 메서드

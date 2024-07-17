@@ -63,15 +63,17 @@ public class AccountController {
 	
 	@PostMapping("/login")
 	public String login(MemberDto member, String returnUri, HttpSession session) {
-		
+		System.out.println("start 컨트롤러 진입");
 		MemberDto loginMember = accountService.findMemberByMemeberIdAndPasswd(member);
 		
 		if (loginMember != null) { // 로그인 성공 ( 사용자가 입력한 id, password에 해당하는 데이터가 조회된 경우 )
 			// 2-2. 로그인 처리 --> 세션에 데이터 저장
 			session.setAttribute("loginuser", loginMember);
+			System.out.println("로그인 성공 컨트롤러 진입");
 			return "redirect:" + returnUri; // 절대경로
 			
 		} else {
+			System.out.println("로그인 실패 컨트롤러 else 진입");
 			return "redirect:login?loginfail=true&returnuri" + returnUri; // 상대경로
 		}
 		
@@ -98,7 +100,7 @@ public class AccountController {
 		return "redirect:/account/login";
 	}
 	
-	
+
 	
 	
 	

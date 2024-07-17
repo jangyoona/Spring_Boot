@@ -69,6 +69,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/board/*write*", "/board/*edit*", "/board/*delete*").authenticated() // authenticated? 로그인한 사용자만 허용 설정
                         .requestMatchers("/admin/**").hasRole("ADMIN") // hasRole? 권한을 기반으로해서 허용
                         .anyRequest().permitAll()) // 그 외 모든 요청은 인증을 필요설정  authorize? 권한체크 정보.
+//                .sessionManagement()
+//                .maximumSessions(1) // 동시 세션 제어
+
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin((login) -> login
                  // 단, Parameter 설정을 안할 경우에는 - 약속<규격>된대로 input-name 속성을 => id는 'username' / pw는 'password' 로 설정해줘야함(action? /login 으로.)
