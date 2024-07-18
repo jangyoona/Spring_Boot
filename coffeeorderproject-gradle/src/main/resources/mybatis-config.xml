@@ -15,7 +15,7 @@
 		<typeAlias type="com.coffeeorderproject.spring.dto.UserOrderDto" alias="userOrderDto" />
 		<typeAlias type="com.coffeeorderproject.spring.dto.ProductDto" alias="productDto" />
 	</typeAliases>
-	
+
 	<mappers>
 		<mapper resource="com/coffeeorderproject/mapper/UserMapper.xml" />
 		<mapper resource="com/coffeeorderproject/mapper/MyPageMapper.xml" />
